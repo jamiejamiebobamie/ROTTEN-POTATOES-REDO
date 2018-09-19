@@ -1,8 +1,10 @@
 const express = require('express')
+const methodOverride = require('method-override')
 const app = express()
 var exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useMongoClient: true });
+
 
 // INITIALIZE BODY-PARSER AND ADD IT TO APP
 const bodyParser = require('body-parser');
@@ -13,8 +15,10 @@ const Review = mongoose.model('Review', {
   movieTitle: String
 });
 
+
+app.use(methodOverride('_method'))
 // The following line must appear AFTER const app = express() and before your routes!
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -70,4 +74,15 @@ app.get('/reviews/:id/edit', (req, res) => {
   Review.findById(req.params.id, function(err, review) {
     res.render('reviews-edit', {review: review});
   })
+})
+
+// UPDATE
+app.put('/reviews/:id', (req, res) => {
+  Review.findByIdAndUpdate(req.params.id, req.body)
+    .then(review => {
+      res.redirect(`/reviews/${review._id}`)
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
 })
