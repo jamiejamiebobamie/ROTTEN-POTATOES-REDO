@@ -23,7 +23,7 @@ describe('Reviews', ()  => {
 
   // TEST INDEX
   it('should index ALL reviews on / GET', (done) => {
-    chai.request(server)
+    chai.request(app)
         .get('/')
         .end((err, res) => {
           res.should.have.status(200);
@@ -34,7 +34,7 @@ describe('Reviews', ()  => {
 
   // TEST NEW
   it('should display new form on /reviews/new GET', (done) => {
-      chai.request(server)
+      chai.request(app)
       .get('/reviews/new')
         .end((req, res) => {
         res.should.have.status(200);
@@ -48,7 +48,7 @@ describe('Reviews', ()  => {
   it('should show a SINGLE review on /reviews/<id> GET', (done) => {
     var review = new Review(sampleReview);
     review.save((err, data) => {
-      chai.request(server)
+      chai.request(app)
         .get(`/reviews/${data._id}`)
         .end((err, res) => {
           res.should.have.status(200);
@@ -60,7 +60,7 @@ describe('Reviews', ()  => {
 
   // TEST CREATE
   it('should create a SINGLE review on /reviews POST', (done) => {
-    chai.request(server)
+    chai.request(app)
         .post('/reviews')
         .send(sampleReview)
         .end((err, res) => {
@@ -74,7 +74,7 @@ describe('Reviews', ()  => {
 it('should edit a SINGLE review on /reviews/<id>/edit GET', (done) => {
 var review = new Review(sampleReview);
  review.save((err, data) => {
-   chai.request(server)
+   chai.request(app)
      .get(`/reviews/${data._id}/edit`)
      .end((err, res) => {
        res.should.have.status(200);
@@ -88,7 +88,7 @@ var review = new Review(sampleReview);
  it('should update a SINGLE review on /reviews/<id> PUT', (done) => {
    var review = new Review(sampleReview);
    review.save((err, data)  => {
-    chai.request(server)
+    chai.request(app)
      .put(`/reviews/${data._id}?_method=PUT`)
      .send({'title': 'Updating the title'})
      .end((err, res) => {
@@ -103,7 +103,7 @@ var review = new Review(sampleReview);
  it('should delete a SINGLE review on /reviews/<id> DELETE', (done) => {
    var review = new Review(sampleReview);
    review.save((err, data)  => {
-    chai.request(server)
+    chai.request(app)
      .delete(`/reviews/${data._id}?_method=DELETE`)
      .end((err, res) => {
        res.should.have.status(200);
