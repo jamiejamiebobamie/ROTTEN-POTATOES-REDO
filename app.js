@@ -1,19 +1,19 @@
 const express = require('express')
 const methodOverride = require('method-override')
+const mongoose = require('mongoose');
 const app = express()
 var exphbs = require('express-handlebars');
-const mongoose = require('mongoose');
+const Review = require('./models/review.js')
+
+
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useMongoClient: true });
 
+require('./controllers/reviews.js')(app)
+//require -- ask about it.
 
 // INITIALIZE BODY-PARSER AND ADD IT TO APP
 const bodyParser = require('body-parser');
 
-const Review = mongoose.model('Review', {
-  title: String,
-  description: String,
-  movieTitle: String
-});
 
 
 app.use(methodOverride('_method'))
@@ -33,17 +33,6 @@ app.listen(3000, () => {
 //  { title: "Poopy Butthole" },
 //  { title: "Gay Bottom" }
 //]
-
-// INDEX
-app.get('/', (req, res) => {
-  Review.find()
-    .then(reviews => {
-      res.render('reviews-index', { reviews: reviews });
-    })
-    .catch(err => {
-      console.log(err);
-    })
-})
 
 // NEW
 app.get('/reviews/new', (req, res) => {
@@ -86,3 +75,15 @@ app.put('/reviews/:id', (req, res) => {
       console.log(err.message)
     })
 })
+
+//DELETE
+app.delete('/reviews/:id', function (req, res) {
+  console.log("DELETE review")
+  Review.findByIdAndRemove(req.params.id).then((review) => {
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
+
+module.exports = app;
