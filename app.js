@@ -4,9 +4,17 @@ const mongoose = require('mongoose');
 const app = express()
 var exphbs = require('express-handlebars');
 const Review = require('./models/review.js')
+const Comment = require('./models/comment')
 
 
-mongoose.connect('mongodb://localhost/rotten-potatoes', { useMongoClient: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes', {useNewUrlParser: true})
+.then(() => {
+    console.log("Connected to DB");
+})
+.catch( err => {
+    throw err;
+})
+
 
 require('./controllers/reviews.js')(app)
 //require -- ask about it.
@@ -87,3 +95,4 @@ app.delete('/reviews/:id', function (req, res) {
 })
 
 module.exports = app;
+//import comments from 'comments';
