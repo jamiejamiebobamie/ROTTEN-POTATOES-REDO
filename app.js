@@ -1,10 +1,16 @@
 const express = require('express')
-const methodOverride = require('method-override')
-const mongoose = require('mongoose');
 const app = express()
 var exphbs = require('express-handlebars');
+const mongoose = require('mongoose');
+const methodOverride = require('method-override')
+const bodyParser = require('body-parser');
 const Review = require('./models/review.js')
 const Comment = require('./models/comment')
+const reviews = require("./controllers/reviews");
+const comments = require('./controllers/comments');
+const movies = require('./controllers/movies');
+const Movie = require('./models/movie')
+
 
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes', {useNewUrlParser: true})
@@ -20,11 +26,10 @@ require('./controllers/reviews.js')(app)
 //require -- ask about it.
 
 // INITIALIZE BODY-PARSER AND ADD IT TO APP
-const bodyParser = require('body-parser');
 
 
-
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
+app.use(bodyParser.urlencoded({ extended: true }));
 // The following line must appear AFTER const app = express() and before your routes!
 //app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -41,6 +46,21 @@ app.listen(3000, () => {
 //  { title: "Poopy Butthole" },
 //  { title: "Gay Bottom" }
 //]
+
+//comments(app, Comment);
+
+app.get('/', (req, res) => {
+    Review.find()
+        .then(reviews => {
+            res.render('reviews-index', {reviews: reviews})
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    //res.render('home', {msg: 'Hello World!'});
+});
+
+
 
 // NEW
 app.get('/reviews/new', (req, res) => {
@@ -84,15 +104,15 @@ app.put('/reviews/:id', (req, res) => {
     })
 })
 
-//DELETE
 app.delete('/reviews/:id', function (req, res) {
-  console.log("DELETE review")
-  Review.findByIdAndRemove(req.params.id).then((review) => {
-    res.redirect('/');
-  }).catch((err) => {
-    console.log(err.message);
-  })
+    console.log("DELETE review")
+    Review.findByIdAndRemove(req.params.id).then((review) => {
+        res.redirect('/');
+    }).catch((err) => {
+        console.log(err.message);
+    })
 })
+
 
 module.exports = app;
 //import comments from 'comments';

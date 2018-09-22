@@ -1,14 +1,26 @@
 const express = require('express');
 const app = express();
+const Review = require('../models/review.js');
 const Comment = require('../models/comment.js')
 
-module.exports = (app) => {
+module.exports = app
 
-    // CREATE Comment
-  app.post('/reviews/comments', (req, res) => {
-    Comment.create(req.body).then(comment => {
-      res.redirect(`/reviews/${comment.reviewId}`);
-    }).catch((err) => {
-      console.log(err.message);
-    });
-  });
+//    // CREATE Comment
+//  app.post('/reviews/comments', (req, res) => {
+//    Comment.create(req.body).then(comment => {
+//      res.redirect(`/reviews/${comment.reviewId}`);
+//    }).catch((err) => {
+//      console.log(err.message);
+//    });
+//
+//
+//
+//  //// DELETE
+//app.delete('/reviews/comments/:id', function (req, res) {
+//    console.log("DELETE comment")
+//    Comment.findByIdAndRemove(req.params.id).then((comment) => {
+//      res.redirect(`/reviews/${comment.reviewId}`);
+//    }).catch((err) => {
+//      console.log(err.message);
+//    })
+//});
