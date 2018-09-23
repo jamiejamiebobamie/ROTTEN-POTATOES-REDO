@@ -6,7 +6,7 @@ const Movie = mongoose.model('Movie', {
   //title: String,
   //description: String,
   //movieTitle: String,
-  ////reviewId: { type: Schema.Types.ObjectId, ref: 'Review' }
+  reviewId: { type: Schema.Types.ObjectId, ref: 'Review' }
 });
 
 module.exports = Movie

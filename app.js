@@ -5,11 +5,11 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override')
 const bodyParser = require('body-parser');
 const Review = require('./models/review.js')
-const Comment = require('./models/comment')
-const reviews = require("./controllers/reviews");
-const comments = require('./controllers/comments');
-const movies = require('./controllers/movies');
-const Movie = require('./models/movie')
+const Comment = require('./models/comment.js')
+const reviews = require("./controllers/reviews.js");
+const comments = require('./controllers/comments.js');
+const movies = require('./controllers/movies.js');
+const Movie = require('./models/movie.js')
 
 
 
@@ -19,14 +19,13 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes
 })
 .catch( err => {
     throw err;
-})
+});
 
+comments();
+movies();
+reviews();
 
-require('./controllers/reviews.js')(app)
-//require -- ask about it.
-
-// INITIALIZE BODY-PARSER AND ADD IT TO APP
-
+app.use(express.static('public'));
 
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true }));

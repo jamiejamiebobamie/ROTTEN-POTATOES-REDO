@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const Review = require('../models/review.js')
+const Comment = require('../models/comment.js')
 
 
 //module.exports = function(app) {
@@ -16,9 +17,12 @@ const Review = require('../models/review.js')
 //    })
 //}
 
-
+function reviews(){
 // SHOW
-app.get('/reviews/:id', (req, res) => {
+app.get('/movies/:movieId/reviews/new', (req, res) => {
+
+    render('reviews-new', { movieId: req.params.movieId })
+})
   // find review
   Review.findById(req.params.id).then(review => {
     // fetch its comments
@@ -31,3 +35,7 @@ app.get('/reviews/:id', (req, res) => {
     console.log(err.message)
   });
 });
+
+}
+
+module.exports = reviews
