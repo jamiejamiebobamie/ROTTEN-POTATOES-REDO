@@ -5,15 +5,18 @@
     <h2>{{review.movieTitle}}</h2>
     <p>{{review.description}}</p>
     <p><a href="/reviews/{{review._id}}/edit">Edit</a></p>
-    <p><form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
+    <p><form method="POST" action="#" id="newComment">
         <button class="btn btn-primary" type="submit">Delete</button>
     </form></p>
+
 
 
    <!-- Comment form -->
    {{> comment-form}}
 
     <hr>
+
+    <div id="comments">
 
     <!-- Show Comments -->
     {{#each comments}}

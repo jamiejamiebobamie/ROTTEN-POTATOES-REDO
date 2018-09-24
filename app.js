@@ -24,6 +24,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes
 comments();
 movies();
 reviews();
+postComments();
 
 app.use(express.static('public'));
 
